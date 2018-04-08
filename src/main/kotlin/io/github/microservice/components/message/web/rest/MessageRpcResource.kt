@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController
 class MessageRpcResource(private val jianzhouMessageService: JianZhouMessageService) {
 
     @GetMapping("/sms_captcha")
-    fun smsCaptcha(phone: String, captcha: String): ResponseEntity<Void> {
-        jianzhouMessageService.sendSmsCaptcha(phone, captcha)
+    fun smsCaptcha(phoneNumber: String, captcha: String): ResponseEntity<Void> {
+        jianzhouMessageService.sendSmsCaptcha(phoneNumber, captcha)
         return ResponseEntity.ok().build()
     }
 }
