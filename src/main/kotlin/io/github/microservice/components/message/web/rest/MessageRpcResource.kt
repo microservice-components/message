@@ -15,7 +15,7 @@ class MessageRpcResource(private val jianzhouMessageService: JianZhouMessageServ
 
     @GetMapping("/sms_captcha")
     fun smsCaptcha(phone: String, captcha: String): ResponseEntity<Void> {
-        jianzhouMessageService.send(phone, captcha)
+        jianzhouMessageService.sendSmsCaptcha(phone, captcha)
         return ResponseEntity.ok().build()
     }
 }

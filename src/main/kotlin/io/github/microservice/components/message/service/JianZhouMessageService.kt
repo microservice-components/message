@@ -1,12 +1,26 @@
 package io.github.microservice.components.message.service
 
+import com.jianzhou.sdk.BusinessService
+import com.xiaoleilu.hutool.lang.Validator
+import com.xiaoleilu.hutool.util.StrUtil
 import io.github.microservice.components.message.config.ApplicationProperties
 import org.springframework.stereotype.Service
 
 @Service
 class JianZhouMessageService(private val applicationProperties: ApplicationProperties) {
 
-    fun send(phone: String, captcha: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private val JIANZHOU_ENDPOINT = "http://www.jianzhou.sh.cn/JianzhouSMSWSServer/services/BusinessService"
+    private val service = BusinessService(JIANZHOU_ENDPOINT)
+
+    fun sendSmsCaptcha(phone: String, captcha: String) {
+        if (!Validator.isMobile(phone) || StrUtil.isEmpty(captcha)) {
+            return
+        }
+
+        val content = "您的验证码是 $captcha 【${applicationProperties.jianzhou.signature}】"
+        val result = service.sendMessage(applicationProperties.jianzhou.account, applicationProperties.jianzhou.password, phone, content)
+        if (result <= 0) {
+            throw RuntimeException("Send jianzhou message error! result=$result")
+        }
     }
 }
