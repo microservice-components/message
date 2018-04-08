@@ -27,3 +27,8 @@ spring:
 # to have type-safe configuration, like in the JHipsterProperties above
 # ===================================================================
 application:
+    jianzhou:
+        account: test
+        password: 123
+        signature: 123
+        sendable: true
