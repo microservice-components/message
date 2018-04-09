@@ -11,4 +11,8 @@ class LogSysSmsService : ServiceImpl<LogSysSmsMapper, LogSysSms>() {
 
     private val log = LoggerFactory.getLogger(javaClass)
 
+    fun insertLog(resultId: String, source: String, content: String, count: Int, account: String) {
+        val logSysSms = LogSysSms(resultId = resultId, source = source, content = content, count = count, account = account)
+        baseMapper.insert(logSysSms)
+    }
 }

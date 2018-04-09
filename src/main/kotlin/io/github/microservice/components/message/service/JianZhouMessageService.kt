@@ -7,7 +7,7 @@ import io.github.microservice.components.message.config.ApplicationProperties
 import org.springframework.stereotype.Service
 
 @Service
-class JianZhouMessageService(private val applicationProperties: ApplicationProperties) {
+class JianZhouMessageService(private val applicationProperties: ApplicationProperties, private val logSysSmsService: LogSysSmsService) {
 
     private val JIANZHOU_ENDPOINT = "http://www.jianzhou.sh.cn/JianzhouSMSWSServer/services/BusinessService"
     private val service = BusinessService(JIANZHOU_ENDPOINT)
@@ -19,6 +19,7 @@ class JianZhouMessageService(private val applicationProperties: ApplicationPrope
 
         val content = "您的验证码是 $captcha 【${applicationProperties.jianzhou.signature}】"
         val result = service.sendMessage(applicationProperties.jianzhou.account, applicationProperties.jianzhou.password, phoneNumber, content)
+        logSysSmsService.insertLog(result.toString(), phoneNumber, content, 1, applicationProperties.jianzhou.account)
         if (result <= 0) {
             throw RuntimeException("Send jianzhou message error! result=$result")
         }
